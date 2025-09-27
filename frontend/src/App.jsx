@@ -1,10 +1,11 @@
-import Auth from "./pages/Auth"
+import LandingPage from "./pages/LandingPage";
+import Auth from "./pages/Auth";
 
 function App() {
   
   return (
     <>
-      <Auth />
+      <LandingPage/>
     </>
   )
 }
