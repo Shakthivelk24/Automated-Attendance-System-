@@ -73,8 +73,8 @@ const LandingPage = () => {
       metric: "40% more participation"
     },
     {
-      title: "Easy to Deploy",
-      description: "Works with existing smartphones and basic infrastructure",
+      title: "User Friendly",
+      description: "Can be easily adopted by rural teachers",
       icon: <Zap className="w-8 h-8 text-orange-600" />,
       metric: "5 min setup"
     }
@@ -310,9 +310,9 @@ const LandingPage = () => {
                     <Camera className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">One-Click Photo Capture</h3>
+                    <h3 className="text-xl font-semibold mb-2">One-Click Video Capture</h3>
                     <p className="text-gray-600">
-                      Teacher simply takes one photo of the entire class using a smartphone or webcam. 
+                      Teacher simply takes one video of the entire class using a smartphone or webcam. 
                       No need to call names individually.
                     </p>
                   </div>
