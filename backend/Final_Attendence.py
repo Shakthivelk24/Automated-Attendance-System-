@@ -16,9 +16,9 @@ from pymongo import MongoClient
 # ---------------------------
 # Directories & Files
 # ---------------------------
-CAPTURE_DIR = "captured_faces"
+CAPTURE_DIR = r"backend\Pictures\captured_faces"
 KNOWN_FACES_DIR = "backend\known_faces"
-UNKNOWN_FACES_DIR = "unknown_faces"
+UNKNOWN_FACES_DIR = r"backend\Pictures\unknown_faces"
 ENCODINGS_FILE = "backend\known_faces_encodings.npz"
 STUDENT_INFO_FILE = "backend\Student.csv"
 
