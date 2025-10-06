@@ -5,7 +5,7 @@ import GovDashboard from "./pages/GovDashboard"
 import TeacherDashboard from "./pages/TD1"
 import TD2 from "./pages/TD2"
 import TD3 from "./pages/TD3"
-
+/*
 function App() {
   return (
     <>
@@ -19,6 +19,18 @@ function App() {
           <Route path="/TD3" element={<TD3/>} />
         </Routes>
       </Router>
+    </>
+  )
+}*/
+function App() {
+  return (
+    <>
+      <LandingPage />
+      <Auth />
+      <GovDashboard />
+      <TeacherDashboard/>
+      <TD2/>
+      <TD3/>
     </>
   )
 }

@@ -1,0 +1,22 @@
+click==8.1.8
+colorama==0.4.6
+dlib==19.22.99
+dnspython==2.6.1
+face-recognition==1.3.0
+face_recognition_models==0.3.0
+numpy==1.24.4
+opencv-python==4.12.0.88
+pillow==10.4.0
+pymongo==4.10.1
+
+'''
+To install the required packages, run:
+    intially install Python 3.8 , from https://www.python.org/downloads/
+    install cmake form https://cmake.org/download/
+    install dlib by : dlib : "https://huggingface.co/hanamizuki-ai/pypi-wheels/resolve/main/dlib/dlib-19.22.99-cp38-cp38-win_amd64.whl"
+    pip install cmake
+    python -m venv .venv           # create a virtual environment
+    .\.venv\Scripts\activate       # activate it
+    pip install --upgrade pip      # update pip
+    pip install -r requirements.txt  # install the required packages
+'''
