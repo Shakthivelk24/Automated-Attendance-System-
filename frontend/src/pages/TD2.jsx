@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const TD2 = () => {
+
+ const { class: selectedClass, section: selectedSection } = useParams();
+
+ const navigate = useNavigate()
+
   // Mock student data
   const [students, setStudents] = useState([
     { id: 1, name: "Ravi", present: false },
@@ -41,6 +47,8 @@ const TD2 = () => {
   const totalCount = students.length;
   const attendancePercentage = totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0;
 
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       {/* Header */}
@@ -48,10 +56,9 @@ const TD2 = () => {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold text-gray-800">Teacher Dashboard</h1>
           <div className="text-right">
-            <p className="text-sm text-gray-600">Class 10-A</p>
+            <p className="text-sm text-gray-600">Class {selectedClass}-{selectedSection}</p>
             <p className="text-sm text-gray-600">{new Date().toLocaleDateString()}</p>
-            <button className="px-6 py-2 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg hover:shadow-lg transition-all">Add Student</button>
-
+            <button onClick={() => navigate('/teacher-dashboard/')}className="px-6 py-2 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg hover:shadow-lg transition-all">Add Student</button>
           </div>
         </div>
         
