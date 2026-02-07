@@ -16,7 +16,7 @@ function App() {
         <Route path="/governmentAuth" element={<GovernmentAuth />} />
         <Route path="/gov-dashboard" element={<GovDashboard />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-        <Route path="/teacher-dashboard/td2" element={<TD2 />} />
+        <Route path="/teacher-dashboard/td2/:class/:section" element={<TD2 />} />
         <Route path="/teacher-dashboard/td3" element={<TD3 />} />
       </Routes>
     </>
