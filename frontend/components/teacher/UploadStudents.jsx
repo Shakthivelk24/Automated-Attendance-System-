@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { Calendar, Upload } from "lucide-react";
 
+import toast from "react-hot-toast";
+import { useAppContext } from "../../src/context/AppContext";
+
 const UploadStudents = () => {
+  const { axios } = useAppContext();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
+  console.log("Axios instance in UploadStudents:", axios);
 
   const [cameraOn, setCameraOn] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -15,6 +20,8 @@ const UploadStudents = () => {
     className: "",
     section: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   /* ================= CAMERA EFFECT ================= */
 
@@ -119,12 +126,74 @@ const UploadStudents = () => {
 
     reader.readAsDataURL(file);
   };
+  // Convert Data URL to File object
+  const dataURLtoFile = (dataUrl, fileName) => {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], fileName, { type: mime });
+  };
+
+  const handleSave = async () => {
+    if (
+      !studentData.name ||
+      !studentData.roll ||
+      !studentData.className ||
+      !studentData.section
+    ) {
+      toast.error("Please fill all student details");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+
+      formData.append("name", studentData.name);
+      formData.append("rollNumber", studentData.roll);
+      formData.append("classes", studentData.className);
+      formData.append("section", studentData.section);
+
+      if (uploadedImage) {
+        const imageFile = dataURLtoFile(uploadedImage, `${studentData.name}.png`);
+        formData.append("imageUrl", imageFile);
+      }
+
+      setLoading(true);
+
+      const response = await axios.post(
+        "/api/teacher/upload-student",
+        formData,
+      );
+
+      toast.success("Student details saved successfully");
+
+      setStudentData({
+        name: "",
+        roll: "",
+        className: "",
+        section: "",
+      });
+
+      setUploadedImage(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error saving student details");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /* ================= UI ================= */
 
   return (
     <div className="space-y-6">
-
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">
@@ -135,12 +204,9 @@ const UploadStudents = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow p-6">
-
         <div className="max-w-2xl mx-auto space-y-6">
-
           {/* Student Form */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
             <input
               type="text"
               name="name"
@@ -176,7 +242,6 @@ const UploadStudents = () => {
               onChange={handleChange}
               className="border p-2 rounded-lg w-full"
             />
-
           </div>
 
           {/* Upload Area */}
@@ -185,7 +250,6 @@ const UploadStudents = () => {
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
-
             {/* Preview Image */}
             {uploadedImage && (
               <img
@@ -198,7 +262,6 @@ const UploadStudents = () => {
             {/* Camera View */}
             {cameraOn && (
               <div className="space-y-3">
-
                 <video
                   ref={videoRef}
                   autoPlay
@@ -214,22 +277,17 @@ const UploadStudents = () => {
                 >
                   Capture Photo
                 </button>
-
               </div>
             )}
 
             {/* Upload UI */}
             {!cameraOn && !uploadedImage && (
               <div className="space-y-4">
-
                 <Upload className="h-12 w-12 text-gray-400 mx-auto" />
 
-                <p className="font-medium">
-                  Upload or Capture Student Photo
-                </p>
+                <p className="font-medium">Upload or Capture Student Photo</p>
 
                 <div className="flex justify-center gap-3">
-
                   <label
                     htmlFor="file-upload"
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer"
@@ -243,9 +301,7 @@ const UploadStudents = () => {
                   >
                     Open Camera
                   </button>
-
                 </div>
-
               </div>
             )}
 
@@ -257,16 +313,16 @@ const UploadStudents = () => {
               className="hidden"
               id="file-upload"
             />
-
           </div>
 
           {/* Submit */}
           <button
+            onClick={handleSave}
+            disabled={loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
           >
-            Save Student
+            {loading ? "Saving..." : "Save Student"}
           </button>
-
         </div>
       </div>
     </div>
