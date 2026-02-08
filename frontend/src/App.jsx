@@ -6,10 +6,12 @@ import TD2 from "./pages/TD2";
 import TD3 from "./pages/TD3";
 import SchoolAuth from "../Authentication/SchoolAuth";
 import GovernmentAuth from "../Authentication/GovernmentAuth";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/schoolAuth" element={<SchoolAuth />} />
