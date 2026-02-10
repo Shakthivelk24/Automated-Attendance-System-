@@ -16,18 +16,25 @@ Teachers take a **single group photo**, and the system automatically detects and
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Automated-Attendance-System.git
+git clone https://github.com/Shakthivelk24/Automated-Attendance-System-.git
 
 # Navigate to project folder
 cd Automated-Attendance-System
 
 # Install dependencies for client
-cd client
+cd frontend
 npm install
 
+# To Start the  Frontend
+npm run dev
+
 # Install dependencies for server
-cd ../server
+cd server
 npm install
+
+# To Start the Server
+npm start
+
 ```
 ## 💭 Thought
 
