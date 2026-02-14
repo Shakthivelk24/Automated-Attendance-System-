@@ -6,7 +6,6 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-    console.log("Axios instance in AppProvider:", axios.defaults.baseURL);
     const value = {axios};
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
