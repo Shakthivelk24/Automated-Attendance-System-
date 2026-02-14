@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -13,17 +13,14 @@ import {
   Users,
   UserCheck,
   UserX,
-  Search,
-  Filter,
-  Eye,
-  Edit,
-  Calendar,
-  BookOpen,
-  Settings,
-  Home,
+  Menu,
+  X,
   FileText,
   TrendingUp,
+  Settings,
+  Home,
 } from "lucide-react";
+
 import UploadStudents from "../../components/teacher/UploadStudents";
 import Records from "../../components/teacher/Records";
 
@@ -37,7 +34,7 @@ const attendanceData = [
 
 const TeacherDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const sidebarItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
@@ -49,8 +46,11 @@ const TeacherDashboard = () => {
 
   const renderDashboard = () => (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          Dashboard
+        </h1>
         <div className="text-sm text-gray-500">
           {new Date().toLocaleDateString("en-IN", {
             weekday: "long",
@@ -62,8 +62,8 @@ const TeacherDashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-5 text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-blue-100 text-sm">Today's Attendance</p>
@@ -74,7 +74,7 @@ const TeacherDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
+        <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-5 text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-100 text-sm">Total Students</p>
@@ -85,7 +85,7 @@ const TeacherDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-lg p-6 text-white">
+        <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-xl p-5 text-white">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-red-100 text-sm">Absentees</p>
@@ -97,95 +97,88 @@ const TeacherDashboard = () => {
         </div>
       </div>
 
-      {/* Attendance Chart */}
-      <div className="bg-white rounded-lg shadow p-6">
+      {/* Chart */}
+      <div className="bg-white rounded-xl shadow p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
             Weekly Attendance
           </h2>
           <TrendingUp className="h-5 w-5 text-gray-400" />
         </div>
-        <ResponsiveContainer width="100%" height={300}>
+
+        <ResponsiveContainer width="100%" height={280}>
           <BarChart data={attendanceData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="day" />
             <YAxis />
             <ChartTooltip />
-            <Bar dataKey="present" fill="#10B981" name="Present" />
-            <Bar dataKey="absent" fill="#EF4444" name="Absent" />
+            <Bar dataKey="present" fill="#10B981" />
+            <Bar dataKey="absent" fill="#EF4444" />
           </BarChart>
         </ResponsiveContainer>
       </div>
     </div>
   );
 
-  const renderUpload = () => <UploadStudents />;
-
-  const renderRecords = () => <Records />;
-
-  const renderReports = () => (
-    <div className="text-center py-20">
-      <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-      <h2 className="text-xl font-semibold text-gray-600">
-        Reports Coming Soon
-      </h2>
-      <p className="text-gray-500 mt-2">
-        Detailed attendance reports and analytics will be available here.
-      </p>
-    </div>
-  );
-
-  const renderSettings = () => (
-    <div className="text-center py-20">
-      <Settings className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-      <h2 className="text-xl font-semibold text-gray-600">Settings</h2>
-      <p className="text-gray-500 mt-2">
-        System configuration options will be available here.
-      </p>
-    </div>
-  );
-
   const renderContent = () => {
     switch (activeTab) {
-      case "dashboard":
-        return renderDashboard();
       case "upload":
-        return renderUpload();
+        return <UploadStudents />;
       case "records":
-        return renderRecords();
+        return <Records />;
       case "reports":
-        return renderReports();
+        return (
+          <div className="text-center py-20 text-gray-500">
+            Reports Coming Soon
+          </div>
+        );
       case "settings":
-        return renderSettings();
+        return (
+          <div className="text-center py-20 text-gray-500">Settings Page</div>
+        );
       default:
         return renderDashboard();
     }
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg">
-        <div className="p-6 border-b">
-          <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">SA</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">
-                Smart Attendance
-              </h1>
-              <p className="text-sm text-gray-500">Teacher Portal</p>
-            </div>
+      <div
+        className={`fixed lg:static z-40 top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0`}
+      >
+        <div className="p-6 border-b flex justify-between items-center">
+          <div>
+            <h1 className="text-lg font-bold text-gray-900">
+              Smart Attendance
+            </h1>
+            <p className="text-sm text-gray-500">Teacher Portal</p>
           </div>
+
+          <button className="lg:hidden" onClick={() => setSidebarOpen(false)}>
+            <X className="h-6 w-6" />
+          </button>
         </div>
 
-        <nav className="mt-6">
+        <nav className="mt-4">
           {sidebarItems.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
-              onClick={() => setActiveTab(id)}
-              className={`w-full flex items-center px-6 py-3 text-left hover:bg-blue-50 transition-colors ${
+              onClick={() => {
+                setActiveTab(id);
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center px-6 py-3 text-left hover:bg-blue-50 transition ${
                 activeTab === id
                   ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
                   : "text-gray-600"
@@ -199,8 +192,18 @@ const TeacherDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto p-8">{renderContent()}</div>
+      <div className="flex-1 flex flex-col">
+        {/* Top Bar (Mobile) */}
+        <div className="lg:hidden bg-white shadow p-4 flex items-center justify-between">
+          <button onClick={() => setSidebarOpen(true)}>
+            <Menu className="h-6 w-6" />
+          </button>
+          <h1 className="font-semibold">Teacher Dashboard</h1>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          {renderContent()}
+        </div>
       </div>
     </div>
   );
