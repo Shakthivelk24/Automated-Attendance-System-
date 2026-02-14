@@ -9,7 +9,6 @@ const UploadStudents = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
-  console.log("Axios instance in UploadStudents:", axios);
 
   const [cameraOn, setCameraOn] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -161,7 +160,10 @@ const UploadStudents = () => {
       formData.append("section", studentData.section);
 
       if (uploadedImage) {
-        const imageFile = dataURLtoFile(uploadedImage, `${studentData.name}.png`);
+        const imageFile = dataURLtoFile(
+          uploadedImage,
+          `${studentData.name}.png`,
+        );
         formData.append("imageUrl", imageFile);
       }
 
@@ -191,29 +193,27 @@ const UploadStudents = () => {
   };
 
   /* ================= UI ================= */
-
   return (
-    <div className="space-y-6">
+    <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Upload / Capture Student Photo
         </h1>
-
-        <Calendar className="h-6 w-6 text-gray-400" />
+        <Calendar className="h-6 w-6 text-gray-400 self-start sm:self-auto" />
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <div className="max-w-2xl mx-auto space-y-6">
+      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
+        <div className="w-full max-w-3xl mx-auto space-y-6">
           {/* Student Form */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="text"
               name="name"
               placeholder="Student Name"
               value={studentData.name}
               onChange={handleChange}
-              className="border p-2 rounded-lg w-full"
+              className="border p-3 rounded-lg w-full text-sm sm:text-base"
             />
 
             <input
@@ -222,7 +222,7 @@ const UploadStudents = () => {
               placeholder="Roll Number"
               value={studentData.roll}
               onChange={handleChange}
-              className="border p-2 rounded-lg w-full"
+              className="border p-3 rounded-lg w-full text-sm sm:text-base"
             />
 
             <input
@@ -231,7 +231,7 @@ const UploadStudents = () => {
               placeholder="Class"
               value={studentData.className}
               onChange={handleChange}
-              className="border p-2 rounded-lg w-full"
+              className="border p-3 rounded-lg w-full text-sm sm:text-base"
             />
 
             <input
@@ -240,13 +240,13 @@ const UploadStudents = () => {
               placeholder="Section"
               value={studentData.section}
               onChange={handleChange}
-              className="border p-2 rounded-lg w-full"
+              className="border p-3 rounded-lg w-full text-sm sm:text-base"
             />
           </div>
 
           {/* Upload Area */}
           <div
-            className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+            className="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-6 text-center transition hover:border-blue-400"
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
@@ -255,7 +255,7 @@ const UploadStudents = () => {
               <img
                 src={uploadedImage}
                 alt="Student"
-                className="max-h-64 mx-auto rounded-lg mb-4"
+                className="max-h-60 sm:max-h-72 w-full object-contain mx-auto rounded-lg mb-4"
               />
             )}
 
@@ -266,14 +266,14 @@ const UploadStudents = () => {
                   ref={videoRef}
                   autoPlay
                   playsInline
-                  className="mx-auto rounded-lg max-h-64"
+                  className="w-full max-h-60 sm:max-h-72 object-cover rounded-lg mx-auto"
                 />
 
                 <canvas ref={canvasRef} className="hidden" />
 
                 <button
                   onClick={capturePhoto}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg"
+                  className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-lg"
                 >
                   Capture Photo
                 </button>
@@ -285,19 +285,21 @@ const UploadStudents = () => {
               <div className="space-y-4">
                 <Upload className="h-12 w-12 text-gray-400 mx-auto" />
 
-                <p className="font-medium">Upload or Capture Student Photo</p>
+                <p className="font-medium text-sm sm:text-base">
+                  Upload or Capture Student Photo
+                </p>
 
-                <div className="flex justify-center gap-3">
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
                   <label
                     htmlFor="file-upload"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer"
+                    className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer"
                   >
                     Upload File
                   </label>
 
                   <button
                     onClick={() => setCameraOn(true)}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-lg"
+                    className="w-full sm:w-auto bg-purple-600 text-white px-4 py-2 rounded-lg"
                   >
                     Open Camera
                   </button>
@@ -319,7 +321,7 @@ const UploadStudents = () => {
           <button
             onClick={handleSave}
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
           >
             {loading ? "Saving..." : "Save Student"}
           </button>
